@@ -1,0 +1,35 @@
+
+#####  C++ COMPILER
+#CXX         = g++
+
+#####  C COMPILER
+CC          = gcc
+
+#######################################################################
+
+.SUFFIXES: .C $(SUFFIXES)
+
+SRCS = mand.c xmand.c  # Source names here.
+
+CCOPTIONS = -O2 -Wall 
+
+LOCAL_LIBRARIES = $(XLIB)
+
+EXTRA_LOAD_FLAGS= -lm
+
+OBJS = $(SRCS:.c=.o) 
+
+.DEFAULT: XMand
+
+XMand: $(OBJS)
+	$(RM) $@
+	$(CC) -o $@ $(OBJS) $(LDOPTIONS) $(LOCAL_LIBRARIES) $(LDLIBS) $(EXTRA_LOAD_FLAGS)
+
+CleanTarget()
+
+.c.o:
+	$(CC) $(CFLAGS) -c $< -o $@
+
+
+clean::
+	$(RM) XMand *.o  #ccc = name of prog here too.
