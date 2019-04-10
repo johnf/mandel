@@ -8,7 +8,7 @@
 
 extern double compinc, realinc;
 extern double r, c, right, left, top, bottom;
-extern int iter, screen, start_color, color_seperation, iterations;
+extern int screen, start_color, color_seperation, iterations;
 
 #define RES 8
 
@@ -156,7 +156,7 @@ int SetupXImage(struct globaldata *g, int w, int h)
   /*to the window, to speedup drawing, and give us Double Buffering */
   int hbits, hs;
   int imsize;
-  unsigned char *im;
+  char *im;
 
   hbits=powerof(w);
   hs=(1<<hbits);

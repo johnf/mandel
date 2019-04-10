@@ -23,7 +23,7 @@ struct globaldata {
   GC gc; /* the graphics context for the window */
   GC xorgc;
   XImage *xim; /* the buffered image. */
-  unsigned char *im; /* the actual data for the buffered image */
+  char *im; /* the actual data for the buffered image */
   int ims; /* the size of the image as 2^ims pixels */
   unsigned long wht; /* the color index for white*/
   unsigned long blk; /* the color index for black*/
@@ -48,9 +48,9 @@ void printhelp(void);
 void initialise(int, int);
 int iterate(int);
 int myrand(int, int);
-void SetMandelPalette(struct globaldata *gb, int,int *ctab);
+void SetMandelPalette(struct globaldata *gb, int *ctab);
 void XFSetMandelZero(struct globaldata *g, int, int, int *ctab);
 void XFProcessMandel(struct globaldata *g, int, int, int *ctab);
-int XMandel(struct globaldata *g,int, int, int, int *ctab);
+int XMandel(struct globaldata *g, int, int, int *ctab);
 void DrawRectangle(struct globaldata *g, int, int, int, int);
 int LetsZoom(struct globaldata *g, int, int, int *ctab);

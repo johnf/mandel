@@ -20,7 +20,7 @@
 
 double comp_increment, real_increment;
 double right, left, top, bottom;
-int iter, screen, start_color, color_seperation, iterations;
+int screen, start_color, color_seperation, iterations;
 struct complex c;
 
 void fewargs()
@@ -65,9 +65,8 @@ int iterate(int reset)
   struct complex z;
   double cond;
   //double pixel, r, g, b;
-  int iter, lim;
+  int iter;
 
-  lim = right;
   if (!reset) {
     c.real = c.real + real_increment;
   }
@@ -116,7 +115,7 @@ int myrand(int numb, int seed)
 }
 
 
-void SetMandelPalette(struct globaldata *gb, int f, int *ctab)
+void SetMandelPalette(struct globaldata *gb, int *ctab)
 {
   /*This function sets the Mandel palette */
   Colormap cm;
@@ -202,7 +201,7 @@ void XFProcessMandel(struct globaldata *g, int w, int h, int *ctab)
   }
 }
 
-int XMandel(struct globaldata *g, int w, int h, int f, int *ctab)
+int XMandel(struct globaldata *g, int w, int h, int *ctab)
 {
   printf("XMandel\n");
   /*This function is the hub of XMandel.. it initialises the Mandel array, */
@@ -278,38 +277,38 @@ int LetsZoom(struct globaldata *g, int w, int h, int *ctab) {
           diff2 = (top - bottom) / h;
           if( lastX < currentX && lastY > currentY ) {
             printf("a");
-            left2 = left + (float)lastX * diff;
-            right = left + (float)currentX * diff;
+            left2 = left + (double)lastX * diff;
+            right = left + (double)currentX * diff;
             left = left2;
-            top2 = top - (float)currentY * diff2;
-            bottom = top - (float)lastY * diff2;
+            top2 = top - (double)currentY * diff2;
+            bottom = top - (double)lastY * diff2;
             top = top2;
           }
           else if(lastX < currentX && lastY < currentY) {
             printf("b");
-            left2 = left + (float)lastX * diff;
-            right = left + (float)currentX * diff;
+            left2 = left + (double)lastX * diff;
+            right = left + (double)currentX * diff;
             left = left2;
-            top2 = top - (float)lastY * diff2;
-            bottom = top - (float)currentY * diff2;
+            top2 = top - (double)lastY * diff2;
+            bottom = top - (double)currentY * diff2;
             top = top2;
           }
           else if( lastX > currentX && lastY > currentY ) {
             printf("c");
-            left2 = left + (float)currentX * diff;
-            right = left + (float)lastX * diff;
+            left2 = left + (double)currentX * diff;
+            right = left + (double)lastX * diff;
             left = left2;
-            top2 = top - (float)currentY * diff2;
-            bottom = top - (float)lastY * diff2;
+            top2 = top - (double)currentY * diff2;
+            bottom = top - (double)lastY * diff2;
             top = top2;
           }
           else {
             printf("d");
-            left2 = left + (float)currentX * diff;
-            right = left + (float)lastX * diff;
+            left2 = left + (double)currentX * diff;
+            right = left + (double)lastX * diff;
             left = left2;
-            top2 = top - (float)lastY * diff2;
-            bottom = top - (float)currentY * diff2;
+            top2 = top - (double)lastY * diff2;
+            bottom = top - (double)currentY * diff2;
             top = top2;
           }
           fflush(stdout);
@@ -317,7 +316,7 @@ int LetsZoom(struct globaldata *g, int w, int h, int *ctab) {
           real_increment = (right - left) / w;
           c.real = left;
           c.imaginary = bottom;
-          XMandel(g, w, h, 0, ctab);
+          XMandel(g, w, h, ctab);
           XSelectInput(g->disp, g->win, EV_MASK);
           lastX = currentX;
           lastY = currentY;
@@ -420,7 +419,7 @@ int main(int argc, char **argv) {
   }
 
   /* Set up the palette for the mandel*/
-  SetMandelPalette(&glob, flags, colortab);
+  SetMandelPalette(&glob, colortab);
   /* Check the dimensions of the window (in case it didn't end up being the */
   /* size we requested) */
   width = GetWinWidth(&glob) + 2;
@@ -433,7 +432,7 @@ int main(int argc, char **argv) {
     exit(1);
   }
   /* Start displaying the Mandel!*/
-  if (!XMandel(&glob, width, height, flags, colortab)) {
+  if (!XMandel(&glob, width, height, colortab)) {
     /* if XMandel returned 0, it encountered an error in allocating memory */
     printf("Not enough memory to allocate to the Mandel arrays\n");
     exit(1);
