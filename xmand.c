@@ -10,7 +10,7 @@ extern double compinc, realinc;
 extern double r, c, right, left, top, bottom;
 extern int screen, start_color, color_seperation, iterations;
 
-#define RES 8
+#define DEPTH 24
 
 int powerof(unsigned int n)
 {
@@ -161,13 +161,13 @@ int SetupXImage(struct globaldata *g, int w, int h)
   hbits=powerof(w);
   hs=(1<<hbits);
   /* calculate the memory needed for the image data */
-  imsize=hs*h*sizeof(char);
+  imsize=hs*h*sizeof(unsigned long);
   /* allocate the memory for the image data */
   im=(char *)malloc(imsize);
   /* if we couldn't allocate the memory, return 0 */
   if (!im) return 0;
   /* create the XImage from the data */
-  g->xim=XCreateImage(g->disp, g->vis, RES, ZPixmap, 0, im, hs, h, 32, 0);
+  g->xim=XCreateImage(g->disp, g->vis, DEPTH, ZPixmap, 0, im, hs, h, 32, 0);
   printf("\n%d\n", XBitmapPad(g->disp));
   fflush(stdout);
   g->im=im;
