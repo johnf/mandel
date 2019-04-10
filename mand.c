@@ -81,7 +81,7 @@ int iterate(int reset)
    }
 
    z.real = 0; z.imaginary = 0; z.tempreal = 0; iter = 0;
-   
+
    while (iter <= iterations + 1)
    {
       if (iter > iterations - 1)
@@ -110,15 +110,15 @@ int iterate(int reset)
 int myrand(int numb, int seed)
 {
    int number, rand_max,f;
-   
+
    srandom(seed);
    f = random();
-   
+
    rand_max = numb;
    number = 1 + (f % rand_max);
-   
+
    return number;
-   
+
 }
 
 
@@ -128,12 +128,12 @@ void SetMandelPalette(struct globaldata *gb, int f, int *ctab)
    Colormap cm;
    XColor xcl;
    int r, g, b, i;
-   
+
    b = 20;
    /* if the user asled for the windows own colormap, take all the colors */
    /* the display has when this window is active */
 
-   
+
    cm = DefaultColormap(gb->disp, gb->scr);
    xcl.red = (unsigned short)(0 << 8);
    xcl.green = (unsigned short)(0 << 8);
@@ -141,7 +141,7 @@ void SetMandelPalette(struct globaldata *gb, int f, int *ctab)
    xcl.flags = DoRed|DoGreen|DoBlue;
    XAllocColor(gb->disp, cm, &xcl);
    ctab[0]=(int)xcl.pixel;
-   
+
    for (i = 1; i < MAX; i++)
    {
       /* r=myrand(300,b);
@@ -175,9 +175,9 @@ void XFSetMandelZero(struct globaldata *g, int w, int h, int *ctab)
     printf("XFSetMandelZero\n");
    /*This function sets the entire Mandel array to zero*/
    int x, y; //,pixel;
-   
+
    x = 0; y = 0;
-   
+
    for (x = 0; x < (w << 1); x++)
    {
       for (y = 0; y < (h << 1); y++)
@@ -188,7 +188,7 @@ void XFSetMandelZero(struct globaldata *g, int w, int h, int *ctab)
    printf("Cow\n");
    XFlush(g->disp);
    printf("Frog\n");
-   
+
 }
 
 
@@ -222,17 +222,17 @@ int XMandel(struct globaldata *g,int w, int h, int f, int *ctab)
    /* now loop forever, generating and displaying Mandels */
    XFProcessMandel(g, w >> 1, h >> 1, ctab);
    XSelectInput(g->disp, g->win, PEV_MASK2);
-   
+
    while(1)
    {
       XAddPixel(g->xim, 1);
       sleep(0.5);
       XPutImage(g->disp, g->win, g->gc, g->xim, 0, 0, 0, 0, w, h);
-      XFlush(g->disp);   
+      XFlush(g->disp);
       if (XCheckMaskEvent(g->disp, PEV_MASK2, &theEvent))
 	break;
    }
-          
+
    return 1;
 }
 
@@ -247,7 +247,7 @@ void DrawRectangle(struct globaldata *g, int x1, int y1, int x2, int y2)
      XDrawRectangle(g->disp, g->win, g->xorgc, x2, y2, x1-x2, y1-y2);
    else
      XDrawRectangle(g->disp, g->win, g->xorgc, x2, y1, x1-x2, y2-y1);
-   
+
 }
 
 int LetsZoom(struct globaldata *g, int w, int h, int *ctab)
@@ -257,23 +257,23 @@ int LetsZoom(struct globaldata *g, int w, int h, int *ctab)
    int drawingOn = NOT_DRAWING_ON;
    double diff, diff2, top2, left2;
    XEvent theEvent;
-   
+
    XSelectInput(g->disp, g->win, EV_MASK);
    do
    {
-      
+
       XNextEvent(g->disp, &theEvent);
-      
+
       switch(theEvent.type)
       {
        case Expose:
 	 XClearWindow(g->disp, theEvent.xany.window);
 	 break;
-	 
+
        case MapNotify:
 	 XClearWindow(g->disp, theEvent.xany.window);
 	 break;
-	 
+
        case ButtonPress:
 	 if(drawingOn == NOT_DRAWING_ON)
 	 {
@@ -282,15 +282,15 @@ int LetsZoom(struct globaldata *g, int w, int h, int *ctab)
 	    currentX = lastX;
 	    currentY = lastY;
 	    drawingOn = DRAWING_ON;
-	    DrawRectangle(g,lastX, lastY, currentX, currentY); 
+	    DrawRectangle(g,lastX, lastY, currentX, currentY);
 	 }
 	 else
 	 {
-	    DrawRectangle(g,lastX, lastY, currentX, currentY); 
-	    
+	    DrawRectangle(g,lastX, lastY, currentX, currentY);
+
 	    currentX = theEvent.xkey.x;
 	    currentY = theEvent.xkey.y;
-	    DrawRectangle(g,lastX, lastY, currentX, currentY); 
+	    DrawRectangle(g,lastX, lastY, currentX, currentY);
 	    XFlush(g->disp);
 	    diff = (right - left) / w;
 	    diff2 = (top - bottom) / h;
@@ -339,42 +339,42 @@ int LetsZoom(struct globaldata *g, int w, int h, int *ctab)
 	    real_increment = (right - left) / w;
 	    c.real = left;
 	    c.imaginary = bottom;
-	    XMandel(g, w, h, 0, ctab);	 
+	    XMandel(g, w, h, 0, ctab);
 	    XSelectInput(g->disp, g->win, EV_MASK);
 	    lastX = currentX;
 	    lastY = currentY;
-	    
+
 	    drawingOn = NOT_DRAWING_ON;
 	 }
 	 break;
-	 
+
        case MotionNotify:
 	 if(drawingOn == DRAWING_ON )
 	 {
-	    DrawRectangle(g, lastX, lastY, currentX, currentY); 
+	    DrawRectangle(g, lastX, lastY, currentX, currentY);
 	    currentX = theEvent.xmotion.x;
 	    currentY = theEvent.xmotion.y;
-	    DrawRectangle(g, lastX, lastY, currentX, currentY); 
+	    DrawRectangle(g, lastX, lastY, currentX, currentY);
 	    XFlush(g->disp);
 	 }
 	 break;
-	 
+
        case KeyPress:
 	 /* return( processKeyPress(&theEvent) );*/
 	 break;
-	 
+
        case ConfigureNotify:
 	 break;
       }
    } while(1);
-   
+
 }
 
 /* Here's the MAIN part of the program */
 int main(int argc, char **argv)
 {
    struct globaldata glob;
-   char disp[256];	
+   char disp[256];
    int flags;
    int width, height, i, colortab[MAX];
    /* Set all the variable to default values */
@@ -382,7 +382,7 @@ int main(int argc, char **argv)
    flags = NONE;
    width = WIDTH;
    height = HEIGHT;
-   
+
    /* Check command line for arguments */
    if (argc > 1)
    {
@@ -392,7 +392,7 @@ int main(int argc, char **argv)
 	 if (!strcmp("-h", argv[i - 1]))
 	 {
 	    printhelp();
-	    exit(0); 
+	    exit(0);
 	 }
 	 /* if the user requests to run in the root window */
 	 if (!strcmp("-root", argv[i - 1]))
@@ -456,7 +456,7 @@ int main(int argc, char **argv)
 	 exit(1);
       }
    }
-   
+
    /* Set up the palette for the mandel*/
    SetMandelPalette(&glob, flags, colortab);
    /* Check the dimensions of the window (in case it didn't end up being the */
@@ -478,10 +478,10 @@ int main(int argc, char **argv)
       printf("Not enough memory to allocate to the Mandel arrays\n");
       exit(1);
    }
-   
-   
+
+
    LetsZoom(&glob, width, height, colortab);
-   
+
    return 0;
 }
 

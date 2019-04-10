@@ -11,7 +11,7 @@ CC          = gcc
 
 SRCS = mand.c xmand.c  # Source names here.
 
-CCOPTIONS = -O2 -Wall 
+CCOPTIONS = -O2 -Wall
 
 LOCAL_LIBRARIES = $(XLIB)
 

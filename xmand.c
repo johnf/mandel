@@ -57,7 +57,7 @@ int OpenDisp(struct globaldata *g, char *d)
 {
    /*This routine opens up a connection to the X display d */
    Display *disp;
-   
+
    disp=XOpenDisplay(d);
    if (disp==NULL)
    {
@@ -86,12 +86,12 @@ int MakeGC(struct globaldata *g)
    /*This function Creates a GraphicsContext for a Window */
    XGCValues gcvals;
    GC gc, xorgc;
-   
+
    /* Create the GC */
    gc=XCreateGC(g->disp,g->win,(unsigned long)0,&gcvals);
    if (gc)
    {
-      /* If we got our GC, set then fg & bg and return 1) */	
+      /* If we got our GC, set then fg & bg and return 1) */
       XSetForeground(g->disp,gc,g->wht);
       XSetBackground(g->disp,gc,g->blk);
       g->gc=gc;
@@ -101,11 +101,11 @@ int MakeGC(struct globaldata *g)
       /* if we couldn't get our gc, return 0 */
       return 0;
    }
-   
+
    xorgc=XCreateGC(g->disp,g->win,(unsigned long)0,&gcvals);
    if (xorgc)
    {
-      /* If we got our GC, set then fg & bg and return 1) */	
+      /* If we got our GC, set then fg & bg and return 1) */
       XSetForeground(g->disp,xorgc,g->wht);
       XSetBackground(g->disp,xorgc,g->blk);
       XSetFunction(g->disp, xorgc, GXxor);
@@ -122,13 +122,12 @@ int MakeGC(struct globaldata *g)
 int OpenWindow(struct globaldata *g,int w,int h)
 {
    /*This function opens up a window of width w and height h*/
-   g->win=XCreateSimpleWindow(g->disp,RootWindow(g->disp,g->scr)
-			      ,10,10,w,h,5,g->blk,g->blk);
+   g->win=XCreateSimpleWindow(g->disp,RootWindow(g->disp,g->scr) ,10,10,w,h,5,g->blk,g->blk);
    if (!MakeGC(g))
-     {
-	XDestroyWindow(g->disp,g->win);
-	return 0;
-     }
+   {
+      XDestroyWindow(g->disp,g->win);
+      return 0;
+   }
    XMapWindow(g->disp,g->win);
    XFlush(g->disp);
    return 1;
@@ -138,7 +137,7 @@ int GetWinWidth(struct globaldata *g)
 {
    /*This function is returns the width of thw window */
    XWindowAttributes wa;
-   
+
    XGetWindowAttributes(g->disp, g->win, &wa);
 
    return wa.width;
@@ -148,9 +147,9 @@ int GetWinHeight(struct globaldata *g)
 {
    /*This function is returns the height of the window */
    XWindowAttributes wa;
-   
+
    XGetWindowAttributes(g->disp, g->win, &wa);
-  
+
    return wa.height;
 }
 
@@ -165,7 +164,7 @@ int SetupXImage(struct globaldata *g,int w, int h)
    int hbits,hs;
    int imsize;
    unsigned char *im;
-   
+
    hbits=powerof(w);
    hs=(1<<hbits);
    /* calculate the memory needed for the image data */
