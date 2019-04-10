@@ -1,3 +1,4 @@
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -65,7 +66,7 @@ int iterate(int reset)
 {
    struct complex z;
    double cond;
-   double pixel,r,g,b;
+   //double pixel,r,g,b;
    int iter, lim;
 
    lim = right;
@@ -171,24 +172,29 @@ void SetMandelPalette(struct globaldata *gb, int f, int *ctab)
 
 void XFSetMandelZero(struct globaldata *g, int w, int h, int *ctab)
 {
+    printf("XFSetMandelZero\n");
    /*This function sets the entire Mandel array to zero*/
-   int x, y,pixel;
+   int x, y; //,pixel;
    
    x = 0; y = 0;
    
    for (x = 0; x < (w << 1); x++)
    {
       for (y = 0; y < (h << 1); y++)
-	XPutPixel(g->xim, x, y, ctab[45]);
+        XPutPixel(g->xim, x, y, ctab[45]);
    }
+   printf("Moo\n");
    XPutImage(g->disp, g->win, g->gc, g->xim, 0, 0, 0, 0, (w << 1), (h << 1));
+   printf("Cow\n");
    XFlush(g->disp);
+   printf("Frog\n");
    
 }
 
 
 void XFProcessMandel(struct globaldata *g, int w, int h, int *ctab)
 {
+    printf("XFProcessMandel\n");
    /*This function processes entire Mandel array */
    int x, y, reset;
    for (y = ((h << 1) - 1); y >= 2; y--)
@@ -209,6 +215,7 @@ void XFProcessMandel(struct globaldata *g, int w, int h, int *ctab)
 
 int XMandel(struct globaldata *g,int w, int h, int f, int *ctab)
 {
+    printf("XMandel\n");
    /*This function is the hub of XMandel.. it initialises the Mandel array, */
    XEvent theEvent;
    XFSetMandelZero(g, w>>1, h>>1, ctab);
@@ -364,7 +371,7 @@ int LetsZoom(struct globaldata *g, int w, int h, int *ctab)
 }
 
 /* Here's the MAIN part of the program */
-void main(int argc, char **argv)
+int main(int argc, char **argv)
 {
    struct globaldata glob;
    char disp[256];	
@@ -475,6 +482,7 @@ void main(int argc, char **argv)
    
    LetsZoom(&glob, width, height, colortab);
    
+   return 0;
 }
 
 
