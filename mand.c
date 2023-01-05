@@ -7,8 +7,8 @@
 #include <time.h>
 #include "mand.h"
 
-#define HEIGHT      640.0
-#define WIDTH       640.0
+#define HEIGHT      1280
+#define WIDTH       1280
 #define LEFT       -4.0
 #define RIGHT       4.0
 #define TOP         2.0
@@ -53,7 +53,7 @@ void initialise(int h, int w)
   left = LEFT;
   start_color = 20;
   color_seperation = 10000;
-  iterations = 256;
+  iterations = 1024;
   printf("XMand v1.0\n");
   printf("    By: RedOctober (John Ferlito)\n");
   printf("        e-mail: johnf@zip.com.au\n");
